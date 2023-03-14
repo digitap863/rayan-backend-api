@@ -1,11 +1,19 @@
 const asyncHandler = require("express-async-handler");
 const db = require("../config/db");
 const collection = require("../config/collection");
-const generateToken = require("../utils/jwtToken");
+
 const { ObjectId } = require("mongodb");
 const { PROJECT_COLLECTION } = require("../config/collection");
 const { GALLERY_COLLECTION } = require("../config/collection");
 const { uploadS3 } = require("../middelware/S3");
+const jwt = require("jsonwebtoken");
+const generateToken = (id) => {
+  return jwt.sign({ id }, "asif", {
+    expiresIn: "30d",
+  });
+};
+
+
 
 const Login = asyncHandler(async (req, res) => {
   const { username, password } = req.body;
